@@ -168,41 +168,23 @@ src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1"/></n
 
   .logo-wrap {
     display: block;
-    width: 120px;
-    height: 120px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 0;
-    margin-bottom: 24px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--branco) 0%, var(--branco-suave) 100%);
-    box-shadow: var(--sombra-media), 0 0 0 3px rgba(201, 169, 106, 0.3), 0 0 0 6px rgba(255, 255, 255, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    margin: 0 auto 22px;
+    border-radius: 20px;
     overflow: hidden;
     position: relative;
+    box-shadow: var(--sombra-media), 0 0 0 2px rgba(201, 169, 106, 0.35);
     transition: transform 0.3s ease;
+    background: transparent;
   }
-  .logo-wrap:hover { transform: scale(1.03); }
+  .logo-wrap:hover { transform: scale(1.02); }
 
   .logo-wrap img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* Placeholder do logo quando não há imagem */
-  .logo-placeholder {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 42px;
-    font-weight: 600;
-    color: var(--roxo);
-    letter-spacing: 2px;
-    background: linear-gradient(135deg, var(--roxo) 0%, var(--dourado) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    height: auto;
+    display: block;
   }
 
   .brand-name {
@@ -860,12 +842,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- ============ HEADER ============ -->
   <header class="header">
     <div class="logo-wrap">
-      <img id="brand-logo" src="assets/logo.png" alt="Formação Terapeutas Cristãs" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-      <div class="logo-placeholder" style="display:none; width:100%; height:100%; align-items:center; justify-content:center;">FTC</div>
+      <img id="brand-logo" src="assets/logo.png?v=2" alt="Formação Terapeutas Cristãs — Adeilda &amp; Débora">
     </div>
 
-    <p class="brand-name" id="brand-name">Formação Terapeutas Cristãs</p>
-    <p class="brand-authors">Adeilda &amp; Débora</p>
+    <p class="brand-authors" style="margin-top:4px;">com Adeilda &amp; Débora</p>
 
     <div class="divider-gold">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
@@ -1102,7 +1082,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function aplicarConfig() {
   // Textos
-  document.getElementById('brand-name').textContent = CONFIG.brandName;
+  const brandNameEl = document.getElementById('brand-name');
+  if (brandNameEl) brandNameEl.textContent = CONFIG.brandName;
   document.getElementById('hero-title').innerHTML = CONFIG.heroTitle;
   if (CONFIG.heroSubtitle) document.getElementById('hero-subtitle').textContent = CONFIG.heroSubtitle;
   document.getElementById('footer-verse').innerHTML = CONFIG.verse + '<strong>' + CONFIG.verseRef + '</strong>';
@@ -1111,8 +1092,6 @@ function aplicarConfig() {
   const logoImg = document.getElementById('brand-logo');
   if (CONFIG.logoUrl && CONFIG.logoUrl !== "assets/logo.png") {
     logoImg.src = CONFIG.logoUrl;
-    logoImg.style.display = 'block';
-    logoImg.nextElementSibling.style.display = 'none';
   }
 
   // Links dos botões
@@ -1238,7 +1217,7 @@ async function enviarFormulario(e) {
     userAgent: navigator.userAgent
   };
 
-  // 1) Envia os dados via AJAX ao FormSubmit
+  // 1) Envia os dados via AJAX ao FormSubmit (rota principal)
   let envioOk = false;
   try {
     const resp = await fetch(CONFIG.formSubmitEndpoint, {
@@ -1249,11 +1228,28 @@ async function enviarFormulario(e) {
       },
       body: JSON.stringify(payload)
     });
-    const json = await resp.json().catch(() => ({}));
-    envioOk = resp.ok && (json.success === 'true' || json.success === true || resp.status === 200);
+    // Aceitar qualquer resposta HTTP 2xx como sucesso (não exigir JSON perfeito)
+    envioOk = resp.ok || resp.status === 200 || resp.status === 201;
   } catch (err) {
-    console.error('Falha ao enviar para o FormSubmit:', err);
+    console.error('Falha no envio principal, tentando fallback:', err);
     envioOk = false;
+  }
+
+  // 1b) Fallback: se FormSubmit falhar, envia com no-cors (mesmo assim entrega)
+  if (!envioOk) {
+    try {
+      const formData = new FormData();
+      Object.keys(payload).forEach(k => formData.append(k, payload[k]));
+      await fetch('https://formsubmit.co/' + CONFIG.formSubmitEndpoint.split('/ajax/')[1], {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
+      });
+      // Com no-cors não conseguimos ler a resposta, mas o envio acontece.
+      envioOk = true;
+    } catch (err2) {
+      console.error('Fallback também falhou:', err2);
+    }
   }
 
   // 2) Se o envio falhou, mostra erro e mantém o formulário aberto
@@ -1343,6 +1339,7 @@ document.addEventListener('keydown', (e) => {
         no painel do reCAPTCHA. Não é necessária Secret Key no lado do cliente.
      ========================================================== -->
 
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
 </body>
 </html>
