@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /painel.html
+Disallow: /painel-configuracao
+
+Sitemap: https://SEU-DOMINIO.vercel.app/sitemap.xml

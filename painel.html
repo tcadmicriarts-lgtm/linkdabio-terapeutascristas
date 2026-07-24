@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de Configuração — Formação Terapeutas Cristãs</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --roxo-profundo: #3D1E5E;
+    --roxo: #5B2A8B;
+    --roxo-claro: #7B44B0;
+    --lilas: #C9A9E4;
+    --lilas-suave: #E8D9F3;
+    --dourado: #C9A96A;
+    --dourado-claro: #E4C88E;
+    --branco: #FFFFFF;
+    --branco-suave: #FBF7FF;
+    --texto-escuro: #2A1245;
+    --texto-suave: #6B5A80;
+    --sucesso: #4CAF50;
+  }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: linear-gradient(180deg, #FBF7FF 0%, #F0E6F9 100%);
+    min-height: 100vh;
+    color: var(--texto-escuro);
+    padding: 40px 20px;
+  }
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    background: var(--branco);
+    border-radius: 24px;
+    padding: 48px 40px;
+    box-shadow: 0 12px 40px rgba(61, 30, 94, 0.12);
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--lilas-suave);
+  }
+  .badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: linear-gradient(135deg, var(--dourado) 0%, var(--dourado-claro) 100%);
+    color: var(--roxo-profundo);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px;
+    font-weight: 600;
+    color: var(--roxo-profundo);
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-size: 15px;
+    color: var(--texto-suave);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .section {
+    margin-bottom: 36px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--roxo);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--roxo) 0%, var(--roxo-profundo) 100%);
+    color: var(--branco);
+    border-radius: 50%;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .section-desc {
+    font-size: 13px;
+    color: var(--texto-suave);
+    margin-bottom: 16px;
+    margin-left: 42px;
+  }
+  .form-grid {
+    display: grid;
+    gap: 16px;
+    margin-left: 42px;
+  }
+  .form-grid.two-col {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media (max-width: 600px) {
+    .form-grid.two-col { grid-template-columns: 1fr; }
+    .container { padding: 32px 24px; }
+    h1 { font-size: 26px; }
+    .form-grid { margin-left: 0; }
+    .section-desc { margin-left: 0; }
+  }
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--roxo);
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .field input, .field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--lilas-suave);
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--texto-escuro);
+    background: var(--branco-suave);
+    transition: all 0.25s;
+    outline: none;
+  }
+  .field input:focus, .field textarea:focus {
+    border-color: var(--roxo);
+    background: var(--branco);
+    box-shadow: 0 0 0 3px rgba(91, 42, 139, 0.1);
+  }
+  .field textarea { resize: vertical; min-height: 80px; }
+  .field .hint {
+    display: block;
+    font-size: 11px;
+    color: var(--texto-suave);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  .status-box {
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: #FFF9E6;
+    border-left: 3px solid var(--dourado);
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--texto-escuro);
+  }
+  .status-box.ok {
+    background: #E8F5E9;
+    border-color: var(--sucesso);
+  }
+  .actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid var(--lilas-suave);
+    flex-wrap: wrap;
+  }
+  .btn {
+    flex: 1;
+    min-width: 200px;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--roxo) 0%, var(--roxo-profundo) 100%);
+    color: var(--branco);
+    box-shadow: 0 6px 20px rgba(91, 42, 139, 0.3);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(91, 42, 139, 0.4);
+  }
+  .btn-secondary {
+    background: var(--branco);
+    color: var(--roxo);
+    border: 1.5px solid var(--lilas);
+  }
+  .btn-secondary:hover {
+    background: var(--lilas-suave);
+  }
+  .instructions {
+    background: linear-gradient(135deg, var(--lilas-suave) 0%, var(--branco-suave) 100%);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+  .instructions h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--roxo-profundo);
+    margin-bottom: 12px;
+  }
+  .instructions ol {
+    margin-left: 20px;
+    color: var(--texto-suave);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .instructions code {
+    background: var(--branco);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--roxo);
+    font-size: 12px;
+  }
+  .save-feedback {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 14px 24px;
+    background: var(--sucesso);
+    color: white;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 8px 24px rgba(76, 175, 80, 0.4);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s;
+    z-index: 999;
+  }
+  .save-feedback.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <span class="badge">Painel Administrativo</span>
+    <h1>Configurações da Página</h1>
+    <p class="subtitle">Edite aqui todos os links, textos e integrações da sua Link da Bio. As alterações são salvas automaticamente.</p>
+  </div>
+
+  <div class="instructions">
+    <h3>📌 Como usar este painel</h3>
+    <ol>
+      <li>Preencha os campos abaixo com seus links e informações reais.</li>
+      <li>Clique em <strong>"Salvar Configurações"</strong> ao final.</li>
+      <li>As alterações aparecerão automaticamente na sua página principal.</li>
+      <li>Para dados persistentes entre dispositivos, cole os valores diretamente no arquivo <code>link-bio.html</code> no objeto <code>CONFIG</code>.</li>
+    </ol>
+  </div>
+
+  <form id="config-form">
+
+    <!-- ============ 1. IDENTIDADE ============ -->
+    <div class="section">
+      <div class="section-title"><span class="num">1</span> Identidade da Marca</div>
+      <div class="section-desc">Logo, nome e textos principais da página.</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>URL do Logo</label>
+          <input type="text" id="logoUrl" placeholder="assets/logo.png">
+          <span class="hint">Envie o arquivo para a pasta <code>assets/</code> ou cole uma URL externa.</span>
+        </div>
+        <div class="field">
+          <label>Nome da Marca</label>
+          <input type="text" id="brandName" placeholder="Formação Terapeutas Cristãs">
+        </div>
+        <div class="field">
+          <label>Título Principal (aceita HTML)</label>
+          <textarea id="heroTitle" rows="2">Deus pode usar a sua &lt;em&gt;história&lt;/em&gt;&lt;br&gt;para restaurar outras vidas</textarea>
+        </div>
+        <div class="field">
+          <label>Subtítulo</label>
+          <input type="text" id="heroSubtitle" placeholder="Escolha abaixo como deseja começar sua jornada.">
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 2. WHATSAPP ============ -->
+    <div class="section">
+      <div class="section-title"><span class="num">2</span> WhatsApp da Equipe</div>
+      <div class="section-desc">Número que receberá os contatos e mensagem automática pré-preenchida.</div>
+      <div class="form-grid two-col">
+        <div class="field">
+          <label>Número (com DDI 55)</label>
+          <input type="text" id="whatsappEquipe" placeholder="5511999999999">
+          <span class="hint">Só dígitos, sem espaços ou símbolos.</span>
+        </div>
+        <div class="field">
+          <label>Mensagem Automática</label>
+          <input type="text" id="mensagemAutomatica" placeholder="Olá! Conheci vocês pelo Instagram...">
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 3. LINKS ============ -->
+    <div class="section">
+      <div class="section-title"><span class="num">3</span> Links dos Botões</div>
+      <div class="section-desc">URLs de destino de cada botão da página.</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Link do Grupo da Aula Gratuita (WhatsApp)</label>
+          <input type="text" id="linkGrupoAula" placeholder="https://chat.whatsapp.com/...">
+        </div>
+        <div class="field">
+          <label>Link da Landing Page da Formação</label>
+          <input type="text" id="linkLandingFormacao" placeholder="https://formacaoterapeutascristas.com.br">
+        </div>
+        <div class="field">
+          <label>Link do Canal do YouTube</label>
+          <input type="text" id="linkYoutube" placeholder="https://youtube.com/@formacaoterapeutascristas">
+        </div>
+        <div class="field">
+          <label>Link do Instagram</label>
+          <input type="text" id="linkInstagram" placeholder="https://instagram.com/formacaoterapeutascristas">
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 4. PRESENTE ============ -->
+    <div class="section">
+      <div class="section-title"><span class="num">4</span> Presente Gratuito</div>
+      <div class="section-desc">Arquivo PDF que será entregue automaticamente após o envio do formulário.</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Caminho do PDF do Presente</label>
+          <input type="text" id="pdfPresente" placeholder="assets/presente.pdf">
+          <span class="hint">Envie o arquivo para a pasta <code>assets/</code> e cole aqui o caminho.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 5. INTEGRAÇÕES ============ -->
+    <div class="section">
+      <div class="section-title"><span class="num">5</span> Integrações & Automação</div>
+      <div class="section-desc">Google Sheets, tracking e códigos externos.</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>URL do Google Apps Script (Webhook do Sheets)</label>
+          <input type="text" id="googleSheetsWebhook" placeholder="https://script.google.com/macros/s/.../exec">
+          <span class="hint">Veja o tutorial abaixo para gerar essa URL.</span>
+        </div>
+        <div class="field">
+          <label>ID do Meta Pixel (Facebook)</label>
+          <input type="text" id="metaPixelId" placeholder="123456789012345">
+        </div>
+        <div class="field">
+          <label>ID do Google Analytics 4</label>
+          <input type="text" id="gaId" placeholder="G-XXXXXXXXXX">
+        </div>
+        <div class="field">
+          <label>ID do Google Tag Manager</label>
+          <input type="text" id="gtmId" placeholder="GTM-XXXXXXX">
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn btn-primary" onclick="salvar()">💾 Salvar Configurações</button>
+      <a href="index.html" class="btn btn-secondary" target="_blank">👁️ Visualizar Página</a>
+      <button type="button" class="btn btn-secondary" onclick="exportarLeads()">📥 Exportar Leads (CSV)</button>
+    </div>
+
+  </form>
+
+  <!-- Tutorial Google Sheets -->
+  <div class="instructions" style="margin-top: 40px;">
+    <h3>🔗 Como integrar com o Google Sheets</h3>
+    <ol>
+      <li>Crie uma planilha nova no <a href="https://sheets.google.com" target="_blank" style="color: var(--roxo);">Google Sheets</a>.</li>
+      <li>Vá em <strong>Extensões → Apps Script</strong>.</li>
+      <li>Cole o código abaixo e salve:
+        <pre style="background: var(--branco); padding: 12px; border-radius: 8px; margin: 8px 0; font-size: 11px; overflow-x: auto;">function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  sheet.appendRow([new Date(), data.nome, data.whatsapp, data.email, data.origem]);
+  return ContentService.createTextOutput(JSON.stringify({success:true}));
+}</pre>
+      </li>
+      <li>Clique em <strong>Implantar → Nova implantação → Web app</strong>.</li>
+      <li>Executar como: <strong>Eu</strong>. Quem tem acesso: <strong>Qualquer pessoa</strong>.</li>
+      <li>Copie a URL gerada e cole no campo <strong>"URL do Google Apps Script"</strong> acima.</li>
+    </ol>
+  </div>
+
+</div>
+
+<div class="save-feedback" id="feedback">✓ Configurações salvas com sucesso!</div>
+
+<script>
+const campos = ['logoUrl', 'brandName', 'heroTitle', 'heroSubtitle',
+  'whatsappEquipe', 'mensagemAutomatica', 'linkGrupoAula',
+  'linkLandingFormacao', 'linkYoutube', 'linkInstagram',
+  'pdfPresente', 'googleSheetsWebhook', 'metaPixelId', 'gaId', 'gtmId'];
+
+// Carrega ao abrir
+document.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('ftc_config');
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+      campos.forEach(c => {
+        if (data[c] && document.getElementById(c)) {
+          document.getElementById(c).value = data[c];
+        }
+      });
+    } catch(e){}
+  }
+});
+
+function salvar() {
+  const data = {};
+  campos.forEach(c => {
+    const el = document.getElementById(c);
+    if (el) data[c] = el.value.trim();
+  });
+  localStorage.setItem('ftc_config', JSON.stringify(data));
+
+  const fb = document.getElementById('feedback');
+  fb.classList.add('show');
+  setTimeout(() => fb.classList.remove('show'), 3000);
+}
+
+function exportarLeads() {
+  const leads = JSON.parse(localStorage.getItem('ftc_leads') || '[]');
+  if (leads.length === 0) {
+    alert('Nenhum lead capturado ainda.');
+    return;
+  }
+  const csv = 'Data,Nome,WhatsApp,Email,Origem\n' +
+    leads.map(l => `"${l.data}","${l.nome}","${l.whatsapp}","${l.email}","${l.origem}"`).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `leads-ftc-${new Date().toISOString().split('T')[0]}.csv`;
+  link.click();
+}
+</script>
+
+</body>
+</html>
