@@ -167,9 +167,13 @@ src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1"/></n
   }
 
   .logo-wrap {
+    display: block;
     width: 120px;
     height: 120px;
-    margin: 0 auto 24px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    margin-bottom: 24px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--branco) 0%, var(--branco-suave) 100%);
     box-shadow: var(--sombra-media), 0 0 0 3px rgba(201, 169, 106, 0.3), 0 0 0 6px rgba(255, 255, 255, 0.5);
@@ -313,6 +317,7 @@ src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1"/></n
     display: flex;
     flex-direction: column;
     gap: 14px;
+    margin-top: 18px;      /* respiro extra para o selo "EXCLUSIVO" não ser cortado */
     margin-bottom: 32px;
   }
 
@@ -435,7 +440,7 @@ src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1"/></n
   /* Selo "presente exclusivo" */
   .btn-badge {
     position: absolute;
-    top: -8px;
+    top: -11px;            /* levemente mais alto, totalmente visível */
     right: 14px;
     background: linear-gradient(135deg, var(--dourado) 0%, var(--dourado-claro) 100%);
     color: var(--roxo-profundo);
@@ -446,7 +451,11 @@ src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1"/></n
     border-radius: 20px;
     box-shadow: 0 2px 8px rgba(201, 169, 106, 0.4);
     text-transform: uppercase;
+    z-index: 2;
   }
+
+  /* Botão que carrega o selo precisa deixar o topo visível */
+  .btn-highlight { margin-top: 6px; }
 
   /* ============ FOOTER ============ */
   .footer {
@@ -897,12 +906,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span class="btn-arrow">→</span>
     </a>
 
-    <!-- BOTÃO 5: Conteúdos Gratuitos -->
+    <!-- BOTÃO 5: Conteúdos Gratuitos (YouTube) -->
     <a class="btn" id="btn-youtube" href="#" target="_blank" rel="noopener" onclick="trackClick('youtube')">
       <div class="btn-icon">▶️</div>
       <div class="btn-text">
-        CONTEÚDOS GRATUITOS
-        <small>Acompanhe no nosso canal do YouTube</small>
+        MENSAGENS DE FÉ, PARA VOCÊ!
+        <small>Podcasts e conteúdos no YouTube</small>
       </div>
       <span class="btn-arrow">→</span>
     </a>
