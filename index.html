@@ -38,6 +38,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+<!-- ============ GOOGLE reCAPTCHA v2 ============ -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 <!-- ============ GOOGLE TAG MANAGER (substituir GTM-XXXXXXX) ============ -->
 <script>
 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -764,6 +767,27 @@ src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1"/></n
     border-radius: 10px;
   }
 
+  /* Container do reCAPTCHA — centralizado e com respiração */
+  .recaptcha-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 6px 0 14px;
+    min-height: 78px;
+  }
+
+  /* Estado desabilitado do botão de envio (aguardando reCAPTCHA) */
+  .btn-submit:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: var(--sombra-suave);
+  }
+  .btn-submit:disabled:hover {
+    transform: none;
+    box-shadow: var(--sombra-suave);
+    background: linear-gradient(135deg, var(--roxo) 0%, var(--roxo-profundo) 100%);
+  }
+
   /* ============ ANIMAÇÕES ============ */
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   @keyframes fadeInDown {
@@ -933,7 +957,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <div id="form-error" class="form-error" role="alert" aria-live="polite"></div>
 
-        <button type="submit" class="btn-submit" id="submit-btn">
+        <!-- reCAPTCHA v2 ("Não sou um robô") -->
+        <div class="recaptcha-wrap">
+          <div class="g-recaptcha"
+               data-sitekey="SUA_SITE_KEY_RECAPTCHA_AQUI"
+               data-callback="onRecaptchaSuccess"
+               data-expired-callback="onRecaptchaExpired"></div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submit-btn" disabled>
           RECEBER MEU PRESENTE →
         </button>
 
@@ -1016,9 +1048,10 @@ const CONFIG = {
   // Link direto de visualização no Google Drive
   pdfPresente: "https://drive.google.com/file/d/1Is1hnFk6jnzvNI7p5sx-La_wdQu9ZbKj/view?usp=sharing",
 
-  // Integração Google Sheets (Apps Script)
-  // URL do Web App publicado (recebe Nome, E-mail e WhatsApp via POST)
-  googleSheetsWebhook: "https://script.google.com/macros/s/AKfycby3MmmD3FOSRwTHQYABxQdrdWeIVeo3F-RwiO8x2aKt0F4SkoQpEPnvfdknNtTeLUQJ/exec",
+  // Integração FormSubmit (AJAX)
+  // Substitua SEU_EMAIL_AQUI pelo e-mail que deve receber os leads.
+  // Ex.: "https://formsubmit.co/ajax/contato@formacaoterapeutascristas.com.br"
+  formSubmitEndpoint: "https://formsubmit.co/ajax/SEU_EMAIL_AQUI",
 
   // Redirecionamento após envio (segundos)
   redirectDelay: 3
@@ -1110,41 +1143,89 @@ document.addEventListener('DOMContentLoaded', () => {
 /* ============================================================
    ENVIO DO FORMULÁRIO → Google Sheets + Presente + Grupo
    ============================================================ */
+/* ============================================================
+   reCAPTCHA — libera o botão de envio somente após validação
+   ============================================================ */
+let recaptchaOk = false;
+
+function onRecaptchaSuccess(token) {
+  recaptchaOk = !!token;
+  const submitBtn = document.getElementById('submit-btn');
+  if (submitBtn && recaptchaOk) submitBtn.disabled = false;
+}
+
+function onRecaptchaExpired() {
+  recaptchaOk = false;
+  const submitBtn = document.getElementById('submit-btn');
+  if (submitBtn) submitBtn.disabled = true;
+}
+
 async function enviarFormulario(e) {
   e.preventDefault();
   const submitBtn = document.getElementById('submit-btn');
   const originalBtnText = submitBtn.textContent;
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'ENVIANDO...';
 
   // Limpa mensagem de erro anterior (se houver)
   const erroBox = document.getElementById('form-error');
   if (erroBox) { erroBox.textContent = ''; erroBox.style.display = 'none'; }
 
-  const dados = {
-    nome: document.getElementById('nome').value.trim(),
-    email: document.getElementById('email').value.trim(),
-    whatsapp: document.getElementById('whatsapp').value.trim(),
+  // 0) Confere reCAPTCHA (defesa em profundidade — o botão já é bloqueado por padrão)
+  const captchaToken = (typeof grecaptcha !== 'undefined')
+    ? grecaptcha.getResponse()
+    : '';
+  if (!recaptchaOk || !captchaToken) {
+    if (erroBox) {
+      erroBox.textContent = 'Confirme que você não é um robô para continuar.';
+      erroBox.style.display = 'block';
+    }
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'ENVIANDO...';
+
+  // Payload enviado ao FormSubmit
+  const nome = document.getElementById('nome').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const whatsapp = document.getElementById('whatsapp').value.trim();
+
+  const payload = {
+    nome: nome,
+    email: email,
+    whatsapp: whatsapp,
+    telefone: whatsapp,
     origem: 'Link da Bio - Instagram',
+    'g-recaptcha-response': captchaToken,
+    _subject: 'Novo lead — Link da Bio (Instagram)',
+    _template: 'table',
+    _captcha: 'false' // usamos nosso próprio reCAPTCHA v2
+  };
+
+  // Guardamos também os dados para o backup local
+  const dados = {
+    nome: nome,
+    email: email,
+    whatsapp: whatsapp,
+    origem: payload.origem,
     data: new Date().toISOString(),
     userAgent: navigator.userAgent
   };
 
-  // 1) Envia os dados ao Google Apps Script via POST (fetch)
-  //    Usamos mode: 'no-cors' porque o Apps Script Web App não devolve
-  //    cabeçalhos CORS para chamadas anônimas — a promise resolve quando
-  //    a requisição sai; a gravação na planilha acontece do lado do script.
+  // 1) Envia os dados via AJAX ao FormSubmit
   let envioOk = false;
   try {
-    await fetch(CONFIG.googleSheetsWebhook, {
+    const resp = await fetch(CONFIG.formSubmitEndpoint, {
       method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
-      body: JSON.stringify(dados)
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload)
     });
-    envioOk = true;
+    const json = await resp.json().catch(() => ({}));
+    envioOk = resp.ok && (json.success === 'true' || json.success === true || resp.status === 200);
   } catch (err) {
-    console.error('Falha ao enviar para o Apps Script:', err);
+    console.error('Falha ao enviar para o FormSubmit:', err);
     envioOk = false;
   }
 
@@ -1152,6 +1233,9 @@ async function enviarFormulario(e) {
   if (!envioOk) {
     submitBtn.disabled = false;
     submitBtn.textContent = originalBtnText;
+    if (typeof grecaptcha !== 'undefined') { try { grecaptcha.reset(); } catch(e){} }
+    recaptchaOk = false;
+    submitBtn.disabled = true;
     if (erroBox) {
       erroBox.textContent = 'Não foi possível enviar agora. Confira sua conexão e tente novamente.';
       erroBox.style.display = 'block';
@@ -1209,24 +1293,27 @@ document.addEventListener('keydown', (e) => {
 </script>
 
 <!-- ==========================================================
-     TEMPLATE DO GOOGLE APPS SCRIPT (para copiar):
+     CONFIGURAÇÃO NECESSÁRIA (2 passos):
 
-     function doPost(e) {
-       var sheet = SpreadsheetApp.getActiveSheet();
-       var data = JSON.parse(e.postData.contents);
-       sheet.appendRow([
-         new Date(),
-         data.nome,
-         data.whatsapp,
-         data.email,
-         data.origem
-       ]);
-       return ContentService.createTextOutput(JSON.stringify({success: true}))
-         .setMimeType(ContentService.MimeType.JSON);
-     }
+     1) FORMSUBMIT — receber os leads no e-mail:
+        Localize em CONFIG:
+          formSubmitEndpoint: "https://formsubmit.co/ajax/SEU_EMAIL_AQUI"
+        Troque SEU_EMAIL_AQUI pelo seu e-mail real. Ex.:
+          formSubmitEndpoint: "https://formsubmit.co/ajax/contato@formacaoterapeutascristas.com.br"
 
-     Deploy → Web app → Execute as: Me → Who has access: Anyone
-     Copie a URL gerada e cole em CONFIG.googleSheetsWebhook
+        No PRIMEIRO envio, o FormSubmit manda um e-mail de ativação
+        para esse endereço — basta clicar no link para começar a
+        receber os leads.
+
+     2) reCAPTCHA v2 — Google:
+        Gere as chaves em https://www.google.com/recaptcha/admin
+        (tipo: reCAPTCHA v2 → "Não sou um robô").
+        Localize no HTML:
+          <div class="g-recaptcha" data-sitekey="SUA_SITE_KEY_RECAPTCHA_AQUI" ...>
+        Troque SUA_SITE_KEY_RECAPTCHA_AQUI pela sua Site Key.
+
+        Cadastre o domínio de produção (ex.: formacaoterapeutascristas.com.br)
+        no painel do reCAPTCHA. Não é necessária Secret Key no lado do cliente.
      ========================================================== -->
 
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
