@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formação Terapeutas Cristãs | Link da Bio</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Playfair Display e Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Configuração de Cores e Estilos Customizados via Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            purple: '#3b0764',   /* Roxo profundo */
+                            deep: '#2e0a4e',    /* Fundo gradiente escuro */
+                            violet: '#6b21a8',   /* Variação vibrante */
+                            gold: '#dfab46',    /* Dourado reluzente */
+                            goldLight: '#fbe29f',/* Dourado suave */
+                            softBeige: '#fdfbf7',/* Creme / Marfim */
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'gold-glow': '0 0 20px rgba(223, 171, 70, 0.35)',
+                        'purple-card': '0 10px 30px -5px rgba(46, 10, 78, 0.5)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- CSS Customizado para Efeitos Visuais -->
+    <style>
+        .gold-border-gradient {
+            background: linear-gradient(135deg, #dfab46 0%, #fbe29f 50%, #b8860b 100%);
+        }
+        .btn-shimmer {
+            background-size: 200% 100%;
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-shimmer:hover {
+            background-position: 100% 0;
+            transform: translateY(-2px);
+        }
+        .modal-blur {
+            backdrop-filter: blur(8px);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #180529;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #dfab46;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-brand-deep via-[#1d0533] to-[#120220] min-h-screen text-slate-100 font-sans flex flex-col justify-between items-center px-4 py-8 antialiased selection:bg-brand-gold selection:text-brand-deep">
+
+    <!-- Container Principal Centralizado -->
+    <main class="w-full max-w-md mx-auto flex flex-col items-center gap-6">
+
+        <!-- 1. CABEÇALHO COM LOGO OFICIAL -->
+        <header class="flex flex-col items-center text-center pt-2">
+            <div class="relative p-1 rounded-full gold-border-gradient shadow-gold-glow mb-4 hover:scale-105 transition-transform duration-300">
+                <div class="w-32 h-32 sm:w-36 sm:h-36 rounded-full overflow-hidden border-2 border-brand-deep bg-brand-purple flex items-center justify-center">
+                    <img src="foto.jpg" 
+                         alt="Formação Terapeutas Cristãs" 
+                         class="w-full h-full object-cover object-center"
+                         loading="eager"
+                         onerror="this.src='https://placehold.co/300x300/4a154b/dfab46?text=Terapeutas+Cristas'">
+                </div>
+                <div class="absolute bottom-1 right-1 bg-brand-gold text-brand-deep w-8 h-8 rounded-full flex items-center justify-center shadow-md font-bold text-xs" title="Verificado">
+                    <i class="fa-solid fa-cross"></i>
+                </div>
+            </div>
+
+            <h1 class="font-serif text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-goldLight via-brand-gold to-yellow-200 tracking-wide">
+                Terapeutas Cristãs
+            </h1>
+            <p class="text-xs uppercase tracking-widest text-brand-gold/80 font-semibold mt-1">
+                @terapeutascristas
+            </p>
+            <p class="text-xs sm:text-sm text-slate-300 mt-2 px-4 leading-relaxed max-w-xs">
+                Unindo inteligência emocional, prática terapêutica e a Palavra de Deus para transformar vidas e cumprir o seu chamado.
+            </p>
+        </header>
+
+        <!-- 2. ISCA MAGNÉTICA PRINCIPAL (DEVOCIONAL GRATUITO EM PDF) -->
+        <div class="w-full">
+            <button onclick="openModal('devocionalModal')" 
+                    class="w-full relative group overflow-hidden rounded-2xl p-[2px] focus:outline-none focus:ring-2 focus:ring-brand-gold shadow-gold-glow">
+                <span class="absolute inset-0 bg-gradient-to-r from-brand-gold via-yellow-200 to-brand-gold animate-pulse"></span>
+                <div class="relative w-full bg-gradient-to-r from-brand-purple to-brand-deep px-5 py-4 rounded-[14px] flex items-center justify-between transition-all duration-300 group-hover:bg-opacity-90">
+                    <div class="flex items-center space-x-3.5">
+                        <div class="w-10 h-10 rounded-xl bg-brand-gold/20 flex items-center justify-center text-brand-gold text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-gift"></i>
+                        </div>
+                        <div class="text-left">
+                            <span class="block text-xs font-semibold text-brand-gold uppercase tracking-wider">Presente Gratuito</span>
+                            <span class="font-bold text-white text-sm sm:text-base">Baixar Devocional 30 Dias (PDF)</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-download text-brand-gold text-lg group-hover:translate-y-0.5 transition-transform"></i>
+                </div>
+            </button>
+        </div>
+
+        <!-- 3. OS 2 QUIZZES COMPLETOS E INTERATIVOS -->
+        <div id="quizzesSection" class="w-full flex flex-col gap-3">
+            <p class="text-xs font-semibold text-brand-gold/80 text-center uppercase tracking-widest mt-2 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-sparkles text-brand-gold"></i> Testes Interativos de Mapeamento
+            </p>
+
+            <!-- QUIZ 1: Mapeamento do Chamado -->
+            <button onclick="startQuiz1()" 
+                    class="w-full bg-slate-900/70 hover:bg-brand-purple/50 border border-brand-gold/40 hover:border-brand-gold rounded-2xl p-4 flex items-center justify-between transition-all duration-300 group shadow-lg backdrop-blur-sm">
+                <div class="flex items-center space-x-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-brand-gold group-hover:scale-110 transition-transform text-lg">
+                        <i class="fa-solid fa-compass-drafting"></i>
+                    </div>
+                    <div class="text-left">
+                        <span class="block font-bold text-slate-100 text-sm sm:text-base group-hover:text-brand-goldLight transition-colors">
+                            Quiz: Mapeamento do Chamado (10 Qs)
+                        </span>
+                        <span class="block text-xs text-slate-300">
+                            Descubra seu perfil para atuar como Terapeuta
+                        </span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-brand-gold group-hover:translate-x-1 transition-all text-sm"></i>
+            </button>
+
+            <!-- QUIZ 2: Resgatando a Minha Identidade -->
+            <button onclick="startQuiz2()" 
+                    class="w-full bg-slate-900/70 hover:bg-brand-purple/50 border border-rose-500/40 hover:border-rose-400 rounded-2xl p-4 flex items-center justify-between transition-all duration-300 group shadow-lg backdrop-blur-sm">
+                <div class="flex items-center space-x-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-rose-500/20 border border-rose-500/30 flex items-center justify-center text-rose-300 group-hover:scale-110 transition-transform text-lg">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <div class="text-left">
+                        <span class="block font-bold text-slate-100 text-sm sm:text-base group-hover:text-rose-200 transition-colors">
+                            Quiz: Resgatando Minha Identidade (8 Qs)
+                        </span>
+                        <span class="block text-xs text-slate-300">
+                            Cura interior e diagnóstico no olhar de Deus
+                        </span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-rose-400 group-hover:translate-x-1 transition-all text-sm"></i>
+            </button>
+        </div>
+
+        <!-- 4. GRUPOS E WHATSAPP -->
+        <div class="w-full flex flex-col gap-3">
+            <p class="text-xs font-semibold text-brand-gold/80 text-center uppercase tracking-widest mt-2">
+                🌱 Comunidade e Suporte
+            </p>
+
+            <a href="https://chat.whatsapp.com/JAoqm6FRyrj43Bt1ng5RGe" 
+               target="_blank" rel="noopener noreferrer"
+               class="w-full bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-500/40 hover:border-emerald-400 rounded-2xl p-4 flex items-center justify-between transition-all duration-300 group shadow-lg">
+                <div class="flex items-center space-x-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform text-xl">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <div class="text-left">
+                        <span class="block font-bold text-emerald-200 text-sm sm:text-base">
+                            Grupo de Aulas Gratuitas
+                        </span>
+                        <span class="block text-xs text-emerald-400/80">
+                            Aulas ao vivo, materiais em PDF e avisos
+                        </span>
+                    </div>
+                </div>
+                <span class="text-xs font-bold bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded-full border border-emerald-500/30">
+                    Entrar
+                </span>
+            </a>
+
+            <a href="https://wa.me/message/6LIMTHAR5NPVF1?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20a%20Formação%20Terapeutas%20Cristãs." 
+               target="_blank" rel="noopener noreferrer"
+               class="w-full bg-slate-900/70 hover:bg-brand-purple/50 border border-slate-700 hover:border-brand-gold/60 rounded-2xl p-4 flex items-center justify-between transition-all duration-300 group shadow-lg">
+                <div class="flex items-center space-x-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center text-brand-gold group-hover:scale-110 transition-transform text-lg">
+                        <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <div class="text-left">
+                        <span class="block font-semibold text-slate-100 text-sm">
+                            Falar no WhatsApp com a Equipe
+                        </span>
+                        <span class="block text-xs text-slate-400">
+                            Tire suas dúvidas sobre a Formação
+                        </span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-500 group-hover:text-brand-gold"></i>
+            </a>
+        </div>
+
+        <!-- 5. RODAPÉ -->
+        <footer class="mt-6 flex flex-col items-center gap-4 w-full pt-4 border-t border-slate-800/80">
+            <div class="flex items-center justify-center space-x-4 sm:space-x-5">
+                <a href="https://www.instagram.com/terapeutascristas/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"
+                   class="w-11 h-11 rounded-full bg-slate-900 border border-slate-800 hover:border-pink-500 flex items-center justify-center text-slate-300 hover:text-pink-500 hover:scale-110 transition-all shadow-md">
+                    <i class="fa-brands fa-instagram text-lg"></i>
+                </a>
+                <a href="https://www.tiktok.com/@adeedebora" target="_blank" rel="noopener noreferrer" aria-label="TikTok"
+                   class="w-11 h-11 rounded-full bg-slate-900 border border-slate-800 hover:border-brand-gold flex items-center justify-center text-slate-300 hover:text-brand-gold hover:scale-110 transition-all shadow-md">
+                    <i class="fa-brands fa-tiktok text-lg"></i>
+                </a>
+                <a href="https://www.youtube.com/@adeildadeboraterapeutascristas" target="_blank" rel="noopener noreferrer" aria-label="YouTube"
+                   class="w-11 h-11 rounded-full bg-slate-900 border border-slate-800 hover:border-red-500 flex items-center justify-center text-slate-300 hover:text-red-500 hover:scale-110 transition-all shadow-md">
+                    <i class="fa-brands fa-youtube text-lg"></i>
+                </a>
+                <a href="https://wa.me/message/6LIMTHAR5NPVF1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"
+                   class="w-11 h-11 rounded-full bg-slate-900 border border-slate-800 hover:border-emerald-500 flex items-center justify-center text-slate-300 hover:text-emerald-400 hover:scale-110 transition-all shadow-md">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                </a>
+            </div>
+            <p class="text-xs text-slate-500 text-center font-medium">
+                © Formação Terapeutas Cristãs. Todos os direitos reservados.
+            </p>
+        </footer>
+    </main>
+
+    <!-- MODAL 1: FORMULÁRIO CAPTURA DEVOCIONAL COM ANTIBOT E AGRADECIMENTO -->
+    <div id="devocionalModal" class="fixed inset-0 bg-slate-950/80 modal-blur z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-gradient-to-b from-brand-deep to-[#180529] border border-brand-gold/40 rounded-3xl w-full max-w-sm p-6 relative shadow-2xl text-slate-100">
+            <button onclick="closeModal('devocionalModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white w-8 h-8 rounded-full bg-slate-900/60 flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="text-center mb-5">
+                <div class="w-12 h-12 rounded-full bg-brand-gold/20 text-brand-gold mx-auto flex items-center justify-center text-xl mb-3">
+                    <i class="fa-solid fa-book-bible"></i>
+                </div>
+                <h3 class="font-serif text-xl font-bold text-brand-goldLight">
+                    Devocional de 30 Dias
+                </h3>
+                <p class="text-xs text-slate-300 mt-1">
+                    Preencha os dados para liberar o download em PDF.
+                </p>
+            </div>
+
+            <form id="devocionalForm" onsubmit="handleLeadCapture(event)" class="space-y-3">
+                <!-- Honeypot anti-bot invisível -->
+                <div class="hidden" aria-hidden="true">
+                    <input type="text" id="devocional_hp" tabindex="-1" autocomplete="off">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-slate-300 mb-1 font-medium">Seu Nome Completo</label>
+                    <input type="text" id="leadName" required placeholder="Ex: Maria Silva" 
+                           class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-gold">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-300 mb-1 font-medium">Seu Melhor E-mail</label>
+                    <input type="email" id="leadEmail" required placeholder="maria@email.com" 
+                           class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-gold">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-300 mb-1 font-medium">Seu WhatsApp com DDD</label>
+                    <input type="tel" id="leadPhone" required placeholder="(11) 99999-9999" 
+                           class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-gold">
+                </div>
+
+                <!-- VERIFICAÇÃO HUMANA ANTIBOT -->
+                <div class="bg-slate-900/90 border border-slate-700/80 rounded-xl p-3 flex items-center justify-between mt-2">
+                    <div class="flex items-center space-x-3">
+                        <input type="checkbox" id="devocionalCaptcha" required class="w-5 h-5 accent-amber-500 rounded cursor-pointer">
+                        <label for="devocionalCaptcha" class="text-xs text-slate-200 font-medium cursor-pointer select-none">
+                            Confirmo que não sou um robô
+                        </label>
+                    </div>
+                    <i class="fa-solid fa-shield-halved text-brand-gold text-lg"></i>
+                </div>
+
+                <button type="submit" id="devocionalSubmitBtn" class="w-full gold-border-gradient text-brand-deep font-bold py-3 rounded-xl shadow-gold-glow hover:brightness-110 transition-all flex items-center justify-center space-x-2 text-sm mt-3">
+                    <i class="fa-solid fa-file-arrow-down"></i>
+                    <span>Baixar Devocional Grátis</span>
+                </button>
+            </form>
+
+            <!-- TELA DE SUCESSO COM AGRADECIMENTO E CONTINUIDADE -->
+            <div id="devocionalSuccess" class="hidden text-center py-3 space-y-3">
+                <div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 mx-auto flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h4 class="font-serif text-lg font-bold text-brand-goldLight">Obrigada! Cadastro Realizado ✨</h4>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    Seu Devocional foi liberado com sucesso! Clique no botão abaixo para baixar o PDF agora mesmo.
+                </p>
+                <div class="pt-1">
+                    <a id="downloadFallbackBtn" href="https://drive.google.com/uc?export=download&id=1Is1hnFk6jnzvNI7p5sx-La_wdQu9ZbKj" target="_blank"
+                       class="inline-flex items-center justify-center bg-brand-gold text-brand-deep font-bold px-5 py-2.5 rounded-xl text-xs hover:bg-yellow-300 transition-colors shadow-gold-glow">
+                        <i class="fa-solid fa-download mr-2"></i> Baixar PDF Agora
+                    </a>
+                </div>
+
+                <!-- MENSAGEM DE AGRADECIMENTO E CONTINUIDADE SOLICITADA -->
+                <div class="bg-purple-950/60 border border-brand-gold/30 rounded-2xl p-3.5 text-left mt-3 space-y-2">
+                    <p class="text-xs text-slate-100 font-bold flex items-center gap-1.5">
+                        <i class="fa-solid fa-sparkles text-brand-gold"></i> Obrigada e continue com a gente!
+                    </p>
+                    <p class="text-[11px] text-slate-300 leading-normal">
+                        Agradecemos por baixar nosso material! Você pode continuar com a gente participando dos nossos <strong>Testes Interativos de Mapeamento</strong> abaixo para descobrir seu diagnóstico completo!
+                    </p>
+                    <button onclick="closeModal('devocionalModal'); scrollToQuizzes();" class="w-full bg-slate-900 hover:bg-brand-purple text-brand-goldLight text-xs font-semibold py-2.5 rounded-xl border border-brand-gold/40 transition-colors flex items-center justify-center gap-2">
+                        <span>Fazer os Testes Interativos</span>
+                        <i class="fa-solid fa-arrow-down text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT DE INTEGRAÇÃO APPS SCRIPT E CAPTURA DOS QUIZZES -->
+    <script>
+        // COLE AQUI A SUA URL DO GOOGLE APPS SCRIPT PUBLICADO COMO WEB APP
+        const GOOGLE_SCRIPT_URL = "SUA_URL_DO_APPS_SCRIPT_AQUI";
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        function scrollToQuizzes() {
+            document.getElementById('quizzesSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // CAPTURA DO LEAD DO DEVOCIONAL COM ANTIBOT
+        function handleLeadCapture(event) {
+            event.preventDefault();
+            
+            // Verificação Honeypot anti-spam
+            if (document.getElementById('devocional_hp').value !== '') return;
+            
+            // Verificação "Não sou um robô"
+            if (!document.getElementById('devocionalCaptcha').checked) {
+                alert('Por favor, confirme que você não é um robô para continuar.');
+                return;
+            }
+
+            const name = document.getElementById('leadName').value.trim();
+            const email = document.getElementById('leadEmail').value.trim();
+            const phone = document.getElementById('leadPhone').value.trim();
+
+            const btn = document.getElementById('devocionalSubmitBtn');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Processando...</span>';
+            btn.disabled = true;
+
+            const payload = {
+                tipo: 'DEVOCIONAL_PDF',
+                nome: name,
+                email: email,
+                telefone: phone,
+                data: new Date().toLocaleString('pt-BR')
+            };
+
+            // Envio para o Google Apps Script
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).catch(err => console.log('Apps Script Error:', err));
+
+            setTimeout(() => {
+                document.getElementById('devocionalForm').classList.add('hidden');
+                document.getElementById('devocionalSuccess').classList.remove('hidden');
+                // Abre o PDF em nova aba para download imediato
+                window.open("https://drive.google.com/uc?export=download&id=1Is1hnFk6jnzvNI7p5sx-La_wdQu9ZbKj", "_blank");
+            }, 800);
+        }
+
+        // DISPARADORES PARA OS 2 QUIZZES
+        function startQuiz1() {
+            alert("Iniciando o Quiz: Mapeamento do Chamado. (Certifique-se de integrar sua lógica de perguntas que envia os dados ao Apps Script).");
+            // Exemplo de envio dos dados do Quiz 1 para a planilha após conclusão:
+            /*
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify({ tipo: 'QUIZ_1', nome: 'Lead', resultado: 'Perfil X', data: new Date().toLocaleString('pt-BR') })
+            });
+            */
+        }
+
+        function startQuiz2() {
+            alert("Iniciando o Quiz: Resgatando Minha Identidade.");
+        }
+    </script>
+</body>
+</html>
