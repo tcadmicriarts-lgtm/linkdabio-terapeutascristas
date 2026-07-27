@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formação Terapeutas Cristãs</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            purple: '#2E1A47',
+                            gold: '#D4AF37',
+                            goldLight: '#F3E5AB',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-rose-500 selection:text-white">
+
+    <!-- SEÇÃO PRINCIPAL / TOPO -->
+    <header class="relative overflow-hidden py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
+        <div class="max-w-4xl mx-auto text-center space-y-6">
+            <span class="inline-block bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs px-4 py-1.5 rounded-full font-semibold uppercase tracking-widest">
+                Fé, Ciência e Cura Interior
+            </span>
+            <h1 class="font-serif text-3xl sm:text-5xl font-bold text-brand-goldLight leading-tight">
+                Formação Terapeutas Cristãs
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto">
+                Desbloqueie seu chamado, cure feridas emocionais e una a direção da Palavra com ferramentas terapêuticas validadas.
+            </p>
+            <div id="quizzesSection" class="pt-4 flex flex-col sm:flex-row justify-center gap-4">
+                <button onclick="startQuiz1()" class="bg-gradient-to-r from-rose-500 to-pink-600 hover:brightness-110 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg text-sm transition-all flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                    <span>Fazer Quiz: Mapeamento do Chamado</span>
+                </button>
+                <button onclick="startQuiz2()" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-bold py-3.5 px-6 rounded-xl text-sm transition-all flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-seedling text-rose-400"></i>
+                    <span>Fazer Quiz: Resgatando Minha Identidade</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MODAL DO QUIZ 1 (MAPEAMENTO DO CHAMADO) -->
+    <div id="quiz1Modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl space-y-6">
+            <button onclick="closeModal('quiz1Modal')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- TELA DE PERGUNTAS QUIZ 1 -->
+            <div id="quiz1QuestionsScreen" class="space-y-4">
+                <div class="flex justify-between items-center text-xs text-slate-400">
+                    <span id="quiz1ProgressText">Pergunta 1 de 10</span>
+                    <span id="quiz1ProgressPercent" class="font-bold text-rose-400">10%</span>
+                </div>
+                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                    <div id="quiz1ProgressBar" class="bg-rose-500 h-full w-[10%] transition-all duration-300"></div>
+                </div>
+                <h3 id="quiz1QuestionTitle" class="font-serif text-base sm:text-lg font-bold text-white pt-2">
+                    Carregando pergunta...
+                </h3>
+                <div id="quiz1OptionsContainer" class="space-y-2.5 text-xs sm:text-sm"></div>
+            </div>
+
+            <!-- TELA DE CAPTURA DE LEAD QUIZ 1 -->
+            <div id="quiz1LeadScreen" class="hidden space-y-4">
+                <div class="text-center">
+                    <div class="w-12 h-12 rounded-full bg-rose-500/20 text-rose-300 mx-auto flex items-center justify-center text-xl mb-2">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <h3 class="font-serif text-lg font-bold text-brand-goldLight">
+                        Quiz Concluído com Sucesso!
+                    </h3>
+                    <p class="text-xs text-slate-300 mt-1">
+                        Mapeamos o seu perfil de atendimento. Preencha abaixo para liberar o seu diagnóstico exclusivo.
+                    </p>
+                </div>
+
+                <form onsubmit="submitQuiz1Lead(event)" class="space-y-3 text-xs">
+                    <div class="hidden" aria-hidden="true">
+                        <input type="text" id="q1_hp" tabindex="-1" autocomplete="off">
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 mb-1 font-medium">Seu Nome Completo</label>
+                        <input type="text" id="q1Name" required placeholder="Digite seu nome" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white focus:border-rose-400 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 mb-1 font-medium">Seu WhatsApp com DDD</label>
+                        <input type="tel" id="q1Phone" required placeholder="(00) 00000-0000" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white focus:border-rose-400 focus:outline-none">
+                    </div>
+
+                    <div class="bg-slate-950 border border-slate-700/80 rounded-xl p-3 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <input type="checkbox" id="q1Captcha" required class="w-5 h-5 accent-rose-500 rounded cursor-pointer">
+                            <label for="q1Captcha" class="text-xs text-slate-200 font-medium cursor-pointer select-none">
+                                Confirmo que não sou um robô
+                            </label>
+                        </div>
+                        <i class="fa-solid fa-shield-halved text-rose-400 text-lg"></i>
+                    </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-r from-rose-500 to-pink-600 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg hover:brightness-110 text-sm flex items-center justify-center space-x-2 mt-2">
+                        <span>Ver Meu Diagnóstico do Chamado</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- TELA DE RESULTADO QUIZ 1 -->
+            <div id="quiz1ResultScreen" class="hidden space-y-4">
+                <div class="text-center border-b border-slate-800 pb-3">
+                    <span class="text-[10px] uppercase tracking-widest bg-rose-500/20 text-rose-300 px-3 py-1 rounded-full font-bold">Seu Perfil Mapeado</span>
+                    <h3 class="font-serif text-lg sm:text-xl font-bold text-brand-goldLight mt-2">
+                        Terapeuta Acolhedora
+                    </h3>
+                </div>
+                <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 text-xs leading-relaxed space-y-3">
+                    <p id="q1Acolhimento" class="text-slate-200 italic font-medium">...</p>
+                    <div class="bg-rose-950/40 border border-rose-500/30 p-3 rounded-xl">
+                        <strong class="block text-rose-300 mb-1"><i class="fa-solid fa-bullseye mr-1"></i> Diagnóstico:</strong>
+                        <p id="q1Diagnostico" class="text-slate-300">...</p>
+                    </div>
+                    <div class="bg-emerald-950/30 border border-emerald-500/30 p-3 rounded-xl">
+                        <strong class="block text-emerald-400 mb-1"><i class="fa-solid fa-seedling mr-1"></i> Próximo Passo:</strong>
+                        <p id="q1ProximoPasso" class="text-slate-300">...</p>
+                    </div>
+                </div>
+                <div>
+                    <a id="q1WhatsappBtn" href="#" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3.5 rounded-xl transition-colors text-xs sm:text-sm flex items-center justify-center space-x-2 shadow-lg">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>Quero Dar o Próximo Passo na Formação</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DO QUIZ 2 (RESGATANDO MINHA IDENTIDADE) -->
+    <div id="quiz2Modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl space-y-6">
+            <button onclick="closeModal('quiz2Modal')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- TELA DE PERGUNTAS QUIZ 2 -->
+            <div id="quiz2QuestionsScreen" class="space-y-4">
+                <div class="flex justify-between items-center text-xs text-slate-400">
+                    <span id="quiz2ProgressText">Pergunta 1 de 8</span>
+                    <span id="quiz2ProgressPercent" class="font-bold text-rose-400">12%</span>
+                </div>
+                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                    <div id="quiz2ProgressBar" class="bg-rose-500 h-full w-[12%] transition-all duration-300"></div>
+                </div>
+                <h3 id="quiz2QuestionTitle" class="font-serif text-base sm:text-lg font-bold text-white pt-2">
+                    Carregando pergunta...
+                </h3>
+                <div id="quiz2OptionsContainer" class="space-y-2.5 text-xs sm:text-sm"></div>
+            </div>
+
+            <!-- TELA DE CAPTURA DE LEAD QUIZ 2 -->
+            <div id="quiz2LeadScreen" class="hidden space-y-4">
+                <div class="text-center">
+                    <div class="w-12 h-12 rounded-full bg-rose-500/20 text-rose-300 mx-auto flex items-center justify-center text-xl mb-2">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+                    <h3 class="font-serif text-lg font-bold text-brand-goldLight">
+                        Quiz de Identidade Concluído!
+                    </h3>
+                    <p class="text-xs text-slate-300 mt-1">
+                        Seu perfil foi mapeado. Informe seus dados para visualizar seu diagnóstico e libertação emocional.
+                    </p>
+                </div>
+
+                <form onsubmit="submitQuiz2Lead(event)" class="space-y-3 text-xs">
+                    <div class="hidden" aria-hidden="true">
+                        <input type="text" id="q2_hp" tabindex="-1" autocomplete="off">
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 mb-1 font-medium">Seu Nome Completo</label>
+                        <input type="text" id="q2Name" required placeholder="Digite seu nome" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white focus:border-rose-400 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 mb-1 font-medium">Seu WhatsApp com DDD</label>
+                        <input type="tel" id="q2Phone" required placeholder="(00) 00000-0000" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white focus:border-rose-400 focus:outline-none">
+                    </div>
+
+                    <div class="bg-slate-950 border border-slate-700/80 rounded-xl p-3 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <input type="checkbox" id="q2Captcha" required class="w-5 h-5 accent-rose-500 rounded cursor-pointer">
+                            <label for="q2Captcha" class="text-xs text-slate-200 font-medium cursor-pointer select-none">
+                                Confirmo que não sou um robô
+                            </label>
+                        </div>
+                        <i class="fa-solid fa-shield-halved text-rose-400 text-lg"></i>
+                    </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-r from-rose-500 to-pink-600 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg hover:brightness-110 text-sm flex items-center justify-center space-x-2 mt-2">
+                        <span>Ver Meu Diagnóstico de Identidade</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- TELA DE RESULTADO QUIZ 2 -->
+            <div id="quiz2ResultScreen" class="hidden space-y-4">
+                <div class="text-center border-b border-slate-800 pb-3">
+                    <span class="text-[10px] uppercase tracking-widest bg-rose-500/20 text-rose-300 px-3 py-1 rounded-full font-bold">Diagnóstico de Identidade</span>
+                    <h3 class="font-serif text-lg sm:text-xl font-bold text-brand-goldLight mt-2">
+                        Filha Amada e Restaurada
+                    </h3>
+                </div>
+                <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 text-xs leading-relaxed space-y-3">
+                    <p id="q2Acolhimento" class="text-slate-200 italic font-medium">...</p>
+                    <div class="bg-rose-950/40 border border-rose-500/30 p-3 rounded-xl">
+                        <strong class="block text-rose-300 mb-1"><i class="fa-solid fa-bullseye mr-1"></i> Raiz Identificada:</strong>
+                        <p id="q2Diagnostico" class="text-slate-300">...</p>
+                    </div>
+                    <div class="bg-emerald-950/30 border border-emerald-500/30 p-3 rounded-xl">
+                        <strong class="block text-emerald-400 mb-1"><i class="fa-solid fa-seedling mr-1"></i> Caminho de Cura:</strong>
+                        <p id="q2ProximoPasso" class="text-slate-300">...</p>
+                    </div>
+                </div>
+                <div>
+                    <a id="q2WhatsappBtn" href="#" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3.5 rounded-xl transition-colors text-xs sm:text-sm flex items-center justify-center space-x-2 shadow-lg">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>Quero Aprofundar Minha Cura na Formação</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT DE CONEXÃO E FUNCIONAMENTO -->
+    <script>
+        // ⚠️ IMPORTANTE: Se você já tem o link do seu Apps Script, cole ele entre as aspas abaixo.
+        const SCRIPT_URL = "SUA_URL_DO_APPS_SCRIPT_AQUI";
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        async function sendDataToSheets(payload) {
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                return true;
+            } catch (error) {
+                console.error("Erro ao enviar dados:", error);
+                return false;
+            }
+        }
+
+        // LÓGICA DO QUIZ 1
+        let currentQuiz1Q = 0;
+        let quiz1Answers = [];
+        const questionsQuiz1 = [
+            { q: "Quando você ouve alguém desabafando sobre dores emocionais, qual é a sua primeira reação natural?", options: ["Sinto forte compaixão e desejo abraçar", "Analiso a raiz lógica e dou conselhos práticos", "Busco uma palavra bíblica de direcionamento", "Fico em silêncio orando intercedendo em segredo"] },
+            { q: "Qual área da restauração humana mais toca o seu coração?", options: ["Ansiedade e crises emocionais", "Relações familiares e conjugais", "Conflitos de identidade e autoestima", "Traumas profundos do passado"] },
+            { q: "Você já percebeu amigas ou familiares buscando seus conselhos espontaneamente?", options: ["Sim, frequentemente me procuram", "Às vezes, quando estão em crise", "Raramente, costumo ser mais reservada", "Sempre dizem que tenho um dom de paz"] },
+            { q: "Qual é o seu maior desafio atual no seu desenvolvimento pessoal?", options: ["Superar medos e inseguranças", "Organizar meu tempo e propósito", "Encontrar uma direção clara de Deus", "Sentir que posso ir muito mais além"] },
+            { q: "Como você enxerga a união entre a fé cristã e a ciência/terapia?", options: ["São complementares e fundamentais", "A fé cura o espírito e a terapia a mente", "Apenas a Palavra de Deus basta", "Preciso aprender mais sobre essa união"] },
+            { q: "Qual formato mais te atrai para aprender e ajudar pessoas?", options: ["Atendimentos individuais profundos", "Rodas de conversa e palestras", "Produção de conteúdos e mentorias", "Aconselhamento ministerial na igreja"] },
+            { q: "O que te impede hoje de viver plenamente o seu chamado?", options: ["Falta de uma metodologia segura", "Medo de não saber lidar com casos graves", "Falta de apoio ou reconhecimento", "Falta de tempo ou recursos"] },
+            { q: "Se você tivesse uma certificação oficial, o que faria?", options: ["Abriria meus próprios atendimentos", "Ajudaria mulheres na minha comunidade", "Uniria minha profissão atual com a terapia", "Ministraria curas e libertações estruturadas"] },
+            { q: "Qual palavra define o seu momento espiritual atual?", options: ["Expectativa e transição", "Busca por maturidade", "Sede de conhecimento profundo", "Prontidão para o Ide"] },
+            { q: "Você acredita que foi chamada para transformar gerações?", options: ["Sim, sinto isso fortemente no meu espírito", "Tenho dúvidas, mas desejo muito", "Ainda estou descobrindo meu lugar", "Sim, quero ser instrumento nas mãos do Pai"] }
+        ];
+
+        function startQuiz1() {
+            currentQuiz1Q = 0;
+            quiz1Answers = [];
+            document.getElementById('quiz1QuestionsScreen').classList.remove('hidden');
+            document.getElementById('quiz1LeadScreen').classList.add('hidden');
+            document.getElementById('quiz1ResultScreen').classList.add('hidden');
+            openModal('quiz1Modal');
+            renderQuiz1Question();
+        }
+
+        function renderQuiz1Question() {
+            const q = questionsQuiz1[currentQuiz1Q];
+            const total = questionsQuiz1.length;
+            const percent = Math.round(((currentQuiz1Q + 1) / total) * 100);
+            document.getElementById('quiz1ProgressText').innerText = `Pergunta ${currentQuiz1Q + 1} de ${total}`;
+            document.getElementById('quiz1ProgressPercent').innerText = `${percent}%`;
+            document.getElementById('quiz1ProgressBar').style.width = `${percent}%`;
+            document.getElementById('quiz1QuestionTitle').innerText = q.q;
+            const container = document.getElementById('quiz1OptionsContainer');
+            container.innerHTML = "";
+            q.options.forEach((opt) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left bg-slate-950 hover:bg-rose-950/40 border border-slate-800 hover:border-rose-400 rounded-xl p-3.5 transition-all text-slate-200 flex items-center justify-between group";
+                btn.innerHTML = `<span>${opt}</span> <i class="fa-solid fa-circle-chevron-right text-slate-600 group-hover:text-rose-400"></i>`;
+                btn.onclick = () => {
+                    quiz1Answers.push({ question: currentQuiz1Q + 1, answer: opt });
+                    currentQuiz1Q++;
+                    if(currentQuiz1Q < questionsQuiz1.length) { renderQuiz1Question(); }
+                    else {
+                        document.getElementById('quiz1QuestionsScreen').classList.add('hidden');
+                        document.getElementById('quiz1LeadScreen').classList.remove('hidden');
+                    }
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        async function submitQuiz1Lead(event) {
+            event.preventDefault();
+            if(document.getElementById('q1_hp').value !== "") return;
+            const nome = document.getElementById('q1Name').value.trim();
+            const whatsapp = document.getElementById('q1Phone').value.trim();
+            await sendDataToSheets({ origem: "Quiz Mapeamento do Chamado", nome, whatsapp, email: "Não solicitado", perfil: "Terapeuta Acolhedora", respostas: quiz1Answers });
+            document.getElementById('quiz1LeadScreen').classList.add('hidden');
+            document.getElementById('quiz1ResultScreen').classList.remove('hidden');
+            document.getElementById('q1Acolhimento').innerText = `Parabéns, ${nome}! Suas respostas revelam um coração alinhado com a compaixão.`;
+            document.getElementById('q1Diagnostico').innerText = "Você possui o perfil natural de 'Terapeuta Acolhedora', com forte capacidade de escuta e direcionamento.";
+            document.getElementById('q1ProximoPasso').innerText = "O próximo passo natural é capacitar-se com ferramentas clínicas e bíblicas.";
+            const msg = encodeURIComponent(`Olá! Meu nome é ${nome}. Fiz o Quiz de Mapeamento do Chamado e quero saber mais sobre a Formação.`);
+            document.getElementById('q1WhatsappBtn').href = `https://wa.me/message/6LIMTHAR5NPVF1?text=${msg}`;
+        }
+
+        // LÓGICA DO QUIZ 2
+        let currentQuiz2Q = 0;
+        let quiz2Answers = [];
+        const questionsQuiz2 = [
+            { q: "Com que frequência você se sente 'esgotada' emocionalmente pelas demandas ao seu redor?", options: ["Sempre, sinto que carrego o peso do mundo", "Frequentemente, me esgoto priorizando os outros", "Às vezes, consigo impor alguns limites", "Raramente, aprendi a blindar minhas emoções"] },
+            { q: "Qual é a sua principal dificuldade ao olhar para o seu próprio espelho interior?", options: ["Não aceitar falhas do passado", "Sentimento de culpa ou inadequação", "Sensação de não ter cumprido meu verdadeiro potencial", "Cansaço de lutar sozinha"] },
+            { q: "Como você lida com críticas ou rejeições?", options: ["Fico profundamente machucada por dias", "Questiono meu valor e minha identidade", "Tento ignorar, mas me corrói por dentro", "Consigo entregar para Deus e seguir em frente"] },
+            { q: "Você sente que sua verdadeira identidade foi sufocada por expectativas alheias?", options: ["Sim, totalmente", "Em grande parte da minha vida", "Um pouco nas relações familiares", "Não, conheço bem minha identidade em Cristo"] },
+            { q: "O quanto o passado ainda dita suas reações hoje?", options: ["Muito, sinto ecos frequentes", "Parcialmente em momentos de estresse", "Quase nada, superei bastante", "Busco cura constante para ser livre"] },
+            { q: "Qual área da sua vida precisa de um 'milagre de identidade' urgente?", options: ["Autoimagem e valor próprio", "Segurança nas tomadas de decisão", "Paz interior e fim da ansiedade", "Autoridade para exercer meu chamado"] },
+            { q: "Você sente que Deus tem um propósito muito maior para você do que vive hoje?", options: ["Sim, sinto um fogo inextinguível no peito", "Sinto que estou apenas no início", "Tenho essa esperança, mas me sinto travada", "Sim, e quero muito destravar essa fase"] },
+            { q: "O que você mais deseja alcançar espiritualmente e emocionalmente?", options: ["Liberdade completa de culpas e medos", "Segurança para ajudar outras mulheres feridas", "Paz mental profunda alinhada à Palavra", "Uma nova história com propósito e autoridade"] }
+        ];
+
+        function startQuiz2() {
+            currentQuiz2Q = 0;
+            quiz2Answers = [];
+            document.getElementById('quiz2QuestionsScreen').classList.remove('hidden');
+            document.getElementById('quiz2LeadScreen').classList.add('hidden');
+            document.getElementById('quiz2ResultScreen').classList.add('hidden');
+            openModal('quiz2Modal');
+            renderQuiz2Question();
+        }
+
+        function renderQuiz2Question() {
+            const q = questionsQuiz2[currentQuiz2Q];
+            const total = questionsQuiz2.length;
+            const percent = Math.round(((currentQuiz2Q + 1) / total) * 100);
+            document.getElementById('quiz2ProgressText').innerText = `Pergunta ${currentQuiz2Q + 1} de ${total}`;
+            document.getElementById('quiz2ProgressPercent').innerText = `${percent}%`;
+            document.getElementById('quiz2ProgressBar').style.width = `${percent}%`;
+            document.getElementById('quiz2QuestionTitle').innerText = q.q;
+            const container = document.getElementById('quiz2OptionsContainer');
+            container.innerHTML = "";
+            q.options.forEach((opt) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left bg-slate-950 hover:bg-rose-950/40 border border-slate-800 hover:border-rose-400 rounded-xl p-3.5 transition-all text-slate-200 flex items-center justify-between group";
+                btn.innerHTML = `<span>${opt}</span> <i class="fa-solid fa-circle-chevron-right text-slate-600 group-hover:text-rose-400"></i>`;
+                btn.onclick = () => {
+                    quiz2Answers.push({ question: currentQuiz2Q + 1, answer: opt });
+                    currentQuiz2Q++;
+                    if(currentQuiz2Q < questionsQuiz2.length) { renderQuiz2Question(); }
+                    else {
+                        document.getElementById('quiz2QuestionsScreen').classList.add('hidden');
+                        document.getElementById('quiz2LeadScreen').classList.remove('hidden');
+                    }
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        async function submitQuiz2Lead(event) {
+            event.preventDefault();
+            if(document.getElementById('q2_hp').value !== "") return;
+            const nome = document.getElementById('q2Name').value.trim();
+            const whatsapp = document.getElementById('q2Phone').value.trim();
+            await sendDataToSheets({ origem: "Quiz Resgatando Minha Identidade", nome, whatsapp, email: "Não solicitado", perfil: "Identidade Restaurada", respostas: quiz2Answers });
+            document.getElementById('quiz2LeadScreen').classList.add('hidden');
+            document.getElementById('quiz2ResultScreen').classList.remove('hidden');
+            document.getElementById('q2Acolhimento').innerText = `Amada ${nome}, o processo de resgate da sua identidade já começou.`;
+            document.getElementById('q2Diagnostico').innerText = "Seu diagnóstico aponta para exaustão emocional por sobrecarga. Há um chamado de resgate da sua essência.";
+            document.getElementById('q2ProximoPasso').innerText = "O caminho para a cura definitiva exige ferramentas de reestruturação emocional.";
+            const msg = encodeURIComponent(`Olá! Meu nome é ${nome}. Fiz o Quiz de Identidade e quero dar o próximo passo na minha restauração.`);
+            document.getElementById('q2WhatsappBtn').href = `https://wa.me/message/6LIMTHAR5NPVF1?text=${msg}`;
+        }
+    </script>
+</body>
+</html>
