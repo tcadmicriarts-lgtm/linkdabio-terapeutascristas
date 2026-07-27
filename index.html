@@ -715,6 +715,55 @@
             }
         }
 
+        // =====================================================================
+        // EXECUÇÃO DO QUIZ 1 (MAPEAMENTO DO CHAMADO)
+        // =====================================================================
+        function startQuiz1() {
+            q1Index = 0;
+            q1Answers = [];
+            document.getElementById('quiz1QuestionsScreen').classList.remove('hidden');
+            document.getElementById('quiz1LeadScreen').classList.add('hidden');
+            document.getElementById('quiz1ResultScreen').classList.add('hidden');
+            renderQuiz1Question();
+            openModal('quiz1Modal');
+        }
+
+        function renderQuiz1Question() {
+            const item = quiz1Data[q1Index];
+            const total = quiz1Data.length;
+            const percent = Math.round(((q1Index + 1) / total) * 100);
+
+            document.getElementById('quiz1ProgressText').innerText = `Pergunta ${q1Index + 1} de ${total}`;
+            document.getElementById('quiz1ProgressPercent').innerText = `${percent}%`;
+            document.getElementById('quiz1ProgressBar').style.width = `${percent}%`;
+
+            document.getElementById('quiz1QuestionTitle').innerText = item.q;
+
+            const container = document.getElementById('quiz1OptionsContainer');
+            container.innerHTML = `
+                <button onclick="selectQuiz1Option('A')" class="w-full text-left bg-slate-900/90 hover:bg-brand-purple/60 border border-slate-700 hover:border-brand-gold p-3.5 rounded-xl transition-all leading-snug">
+                    ${item.a}
+                </button>
+                <button onclick="selectQuiz1Option('B')" class="w-full text-left bg-slate-900/90 hover:bg-brand-purple/60 border border-slate-700 hover:border-brand-gold p-3.5 rounded-xl transition-all leading-snug">
+                    ${item.b}
+                </button>
+                <button onclick="selectQuiz1Option('C')" class="w-full text-left bg-slate-900/90 hover:bg-brand-purple/60 border border-slate-700 hover:border-brand-gold p-3.5 rounded-xl transition-all leading-snug">
+                    ${item.c}
+                </button>
+            `;
+        }
+
+        function selectQuiz1Option(optionLetter) {
+            q1Answers.push({ question: q1Index + 1, answer: optionLetter });
+            q1Index++;
+            if (q1Index < quiz1Data.length) {
+                renderQuiz1Question();
+            } else {
+                document.getElementById('quiz1QuestionsScreen').classList.add('hidden');
+                document.getElementById('quiz1LeadScreen').classList.remove('hidden');
+            }
+        }
+
         function submitQuiz1Lead(e) {
             e.preventDefault();
             // Validação Anti-Robô (Honeypot)
